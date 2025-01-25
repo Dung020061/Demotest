@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model BaiTapTest.Models.LoaiSanPham
+
+@{
+    ViewData["Title"] = "Thêm Sản phẩm";
+}
+
+
+<h2>Thêm Loại Sản phẩm</h2>
+
+
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label for="Ten">Tên loại sản phẩm</label>
+        <input asp-for="Ten" class="form-control" />
+        <span asp-validation-for="Ten" class="text-danger"></span>
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="NgayNhap">Ngày nhập</label>
+        <input asp-for="NgayNhap" type="date" class="form-control" />
+        <span asp-validation-for="NgayNhap" class="text-danger"></span>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+
+@section Scripts {
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate.unobtrusive/1.19.1/jquery.validate.unobtrusive.min.js"></script>
+}

@@ -1,0 +1,37 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model BaiTapTest.Models.LoaiSanPham
+
+<div class="container">
+    <h2>Sửa Sản Phẩm</h2>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label for="Ten">Tên sản phẩm</label>
+            <input asp-for="Ten" class="form-control" />
+            <span asp-validation-for="Ten" class="text-danger"></span>
+        </div>
+
+   
+
+        <div class="form-group">
+            <label for="NgayNhap">Ngày nhập</label>
+            <input asp-for="NgayNhap" type="date" class="form-control" />
+            <span asp-validation-for="NgayNhap" class="text-danger"></span>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>

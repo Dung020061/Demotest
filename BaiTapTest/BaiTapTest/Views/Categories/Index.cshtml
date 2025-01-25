@@ -1,0 +1,147 @@
+﻿@model List<BaiTapTest.Models.LoaiSanPham>
+@{
+    ViewData["Title"] = "Danh sách Loại Sản phẩm";
+}
+
+<h2>Danh sách Loại Sản phẩm</h2>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<!-- Form tìm kiếm -->
+<form id="filterForm">
+    <div>
+        <input type="text" id="keyword" placeholder="Nhập từ khóa tìm kiếm..." class="form-control" style="width: 300px; margin-bottom: 20px;">
+        <button type="button" id="filterButton" class="btn btn-primary" style="margin-top: 10px;">Tìm kiếm</button>
+    </div>
+</form>
+
+<a asp-action="Create" class="btn btn-primary">
+    <i class="fas fa-plus"></i> Thêm Loại Sản Phẩm
+</a>
+<!-- Table hiển thị danh sách loại sản phẩm -->
+<div id="productTable">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên</th>
+           
+                <th>Ngày nhập</th>
+
+                <th>Tính Năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count > 0)
+            {
+                foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Id</td>
+                        <td>@product.Ten</td>
+                     
+                        <td>@product.NgayNhap?.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <a asp-controller="Categories" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+
+                        @*    <a asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+
+                            <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="confirmDelete(@product.Id)">
+                                <i class="fas fa-trash"></i> Xóa
+                            </a>*@
+
+
+                            <a href="javascript:void(0);" class="btn btn-danger btn-sm" onclick="confirmDelete(@product.Id)">
+                                <i class="fas fa-trash"></i> Xóa
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center">Không có sản phẩm nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@if (ViewBag.TotalItems > ViewBag.PageSize)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @for (int i = 1; i <= Math.Ceiling((double)ViewBag.TotalItems / ViewBag.PageSize); i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" asp-controller="Categories" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Tìm kiếm khi bấm nút "Tìm kiếm"
+            $('#filterButton').click(function () {
+                var keyword = $('#keyword').val();
+                var categoryId = $('#categoryId').val(); // Nếu bạn có filter categoryId, bạn có thể thêm vào.
+
+                // Gửi yêu cầu Ajax đến Action Index
+                $.ajax({
+                    url: '@Url.Action("Index", "Categories")',
+                    type: 'GET',
+                    data: {
+                        keyword: keyword,
+                        categoryId: categoryId
+                    },
+                    success: function (data) {
+                        // Thay thế bảng sản phẩm với kết quả trả về
+                        $('#productTable').html($(data).find('#productTable').html());
+                    },
+                    error: function () {
+                        alert('Có lỗi xảy ra!');
+                    }
+                });
+            });
+        });
+    </script>
+
+}
+
+<script>
+    function confirmDelete(productId) {
+        // Hiển thị hộp thoại xác nhận
+        if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+            // Gửi yêu cầu Ajax để xóa sản phẩm
+            $.ajax({
+                url: '@Url.Action("Delete", "Categories")', // Action và Controller tương ứng
+                type: 'POST',
+                data: { id: productId },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message || "Xóa thành công!");
+                        // Làm mới danh sách sản phẩm sau khi xóa thành công
+                        $('#filterButton').click(); // Gọi lại filter (hoặc load lại bảng dữ liệu)
+                    } else {
+                        alert(response.message || "Xóa thất bại!");
+                    }
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra trong quá trình xử lý. Vui lòng thử lại.");
+                }
+            });
+        }
+    }
+</script>
+

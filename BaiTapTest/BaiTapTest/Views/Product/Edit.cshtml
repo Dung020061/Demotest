@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model BaiTapTest.Models.SanPham
+
+<div class="container">
+    <h2>Sửa Sản Phẩm</h2>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label for="Tensanpham">Tên sản phẩm</label>
+            <input asp-for="Tensanpham" class="form-control" />
+            <span asp-validation-for="Tensanpham" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="Gia">Giá</label>
+            <input asp-for="Gia" type="number" class="form-control" />
+            <span asp-validation-for="Gia" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="NgayNhap">Ngày nhập</label>
+            <input asp-for="NgayNhap" type="date" class="form-control" />
+            <span asp-validation-for="NgayNhap" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="IdLoaiSanPham">Loại sản phẩm</label>
+            <select asp-for="IdLoaiSanPham" class="form-control">
+                <option value="">-- Chọn loại sản phẩm --</option>
+                @foreach (var category in ViewData["Categories"] as List<BaiTapTest.Models.LoaiSanPham>)
+                {
+                    <option value="@category.Id">
+                        @category.Ten
+                    </option>
+                }
+                </select>
+            <span asp-validation-for="IdLoaiSanPham" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>

@@ -1,0 +1,56 @@
+﻿
+<div>
+    <select id="categoryFilter">
+        <option value="">Tất cả loại sản phẩm</option>
+        @foreach (var category in ViewBag.Categories)
+        {
+            <option value="@category.Id">@category.Ten</option>
+        }
+    </select>
+
+</div>
+<table id="productsTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Loại sản phẩm</th>
+            <th>Ngày nhập</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+</table>
+<script>
+    const table = $('#productsTable').DataTable({
+        ajax: {
+            url: '/Product/GetProducts',
+            data: function (d) {
+                d.keyword = $('#keyword').val(); // Lấy từ khóa tìm kiếm
+                d.categoryId = $('#categoryFilter').val(); // Lấy loại sản phẩm
+            },
+            dataSrc: 'Data' // Truy xuất danh sách sản phẩm từ trường "Data" của JSON trả về
+        },
+        columns: [
+            { data: 'Id' },
+            { data: 'Tensanpham' },
+            { data: 'Gia' },
+            { data: 'LoaiSanPham' },
+            { data: 'NgayNhap' },
+            {
+                data: null,
+                render: function (data) {
+                    return `
+                            <button onclick="editProduct(${data.Id})">Sửa</button>
+                            <button onclick="deleteProduct(${data.Id})">Xóa</button>
+                        `;
+                }
+            }
+        ]
+    });
+
+
+</script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
