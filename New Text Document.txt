@@ -1,0 +1,18 @@
+-- Tạo bảng Loại Sản phẩm
+Create database testsanpham
+
+
+CREATE TABLE LoaiSanPham (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    ten VARCHAR(255) NOT NULL,
+    ngay_nhap DATE
+);
+
+-- Tạo bảng Sản phẩm
+CREATE TABLE SanPham (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    gia DECIMAL(10, 2) NOT NULL,
+    ngay_nhap DATE,
+    id_loai_san_pham INT,
+    FOREIGN KEY (id_loai_san_pham) REFERENCES LoaiSanPham(id)
+);
